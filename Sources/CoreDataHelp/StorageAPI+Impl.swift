@@ -23,7 +23,7 @@ public extension StorageAPI {
             let data = try persistentContainer.viewContext.fetch(fetchRequest)
             completion(.success(data))
         }catch {
-            completion(.failure())
+            completion(.failure(.init(error: error)))
         }
     }
 }
