@@ -5,14 +5,8 @@
 //  Created by Cristian Ayala Laura on 30/08/21.
 //
 
-import Foundation
 import CoreData
-
-
-public enum ResponseApi<T> {
-    case success(T)
-    case failure(Error)
-}
+import GenericUtilities
 
 public extension StorageAPI {
     func save() {
@@ -24,13 +18,12 @@ public extension StorageAPI {
     }
     
     func getDB<T>(fetchRequest: NSFetchRequest<T>,
-                  completion: @escaping (ResponseApi<[T]>) -> Void) {
-        
+                  completion: @escaping (ResponseAPI<[T]>) -> Void) {
         do {
             let data = try persistentContainer.viewContext.fetch(fetchRequest)
             completion(.success(data))
         }catch {
-            completion(.failure(error))
+            completion(.failure())
         }
     }
 }
