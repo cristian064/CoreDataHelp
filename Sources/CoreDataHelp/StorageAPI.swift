@@ -6,8 +6,12 @@
 //
 
 import CoreData
+import GenericUtilities
 
 public protocol StorageAPI: AnyObject {
     var persistentContainer: NSPersistentContainer {get set}
-    func save()
+    
+    func getDB<T>(fetchRequest: NSFetchRequest<T>,
+                  completion: @escaping (ResponseAPI<[T]>) -> Void)
+    func saveDB(completion: @escaping (ResponseAPI<Void>) -> Void)
 }
