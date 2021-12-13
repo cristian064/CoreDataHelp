@@ -10,7 +10,7 @@ import GenericUtilities
 
 public extension StorageAPI {
 
-    func getDB<T>(fetchRequest: NSFetchRequest<T>,
+    func getDB<T:NSManagedObject>(fetchRequest: NSFetchRequest<T>,
                   completion: @escaping (ResponseAPI<[T]>) -> Void) {
         do {
             let data = try persistentContainer.viewContext.fetch(fetchRequest)
@@ -22,6 +22,18 @@ public extension StorageAPI {
     
     func saveDB(completion: @escaping (ResponseAPI<Void>) -> Void) {
         do {
+            try persistentContainer.viewContext.save()
+            completion(.success(()))
+        }catch {
+            completion(.failure(.init(error: error)))
+        }
+    }
+    
+    func deleteRecordDB(deleteFetchRequest: NSFetchRequest<NSFetchRequestResult>,
+                        completion: @escaping (ResponseAPI<Void>) -> Void) {
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetchRequest)
+        do {
+            try persistentContainer.viewContext.execute(batchDeleteRequest)
             try persistentContainer.viewContext.save()
             completion(.success(()))
         }catch {
