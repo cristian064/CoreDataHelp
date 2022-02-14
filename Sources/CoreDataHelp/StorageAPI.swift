@@ -9,7 +9,7 @@ import CoreData
 import GenericUtilities
 
 public protocol StorageAPI: AnyObject {
-    var persistentContainer: NSPersistentContainer {get set}
+    var storageProvider: StorageProviderProtocol {get set}
     
     func getDB<T: NSManagedObject>(fetchRequest: NSFetchRequest<T>,
                   completion: @escaping (ResponseAPI<[T]>) -> Void)
