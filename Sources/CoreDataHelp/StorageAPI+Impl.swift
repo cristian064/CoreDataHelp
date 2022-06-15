@@ -8,22 +8,22 @@
 import CoreData
 import GenericUtilities
 
-public extension StorageAPI {
+public extension StorageDB {
 
     func getDB<T:NSManagedObject>(fetchRequest: NSFetchRequest<T>,
-                  completion: @escaping (ResponseAPI<[T]>) -> Void) {
+                  completion: @escaping (ResponseDB<[T]>) -> Void) {
         do {
             let data = try storageProvider.viewContext.fetch(fetchRequest)
             completion(.success(data))
         }catch {
-            completion(.failure(.init(error: error)))
+            completion(.failure(.cannotLoad))
         }
     }
     
-    func saveDB(completion: @escaping (ResponseAPI<Void>) -> Void) {
+    func saveDB(completion: @escaping (ResponseDB<Void>) -> Void) {
         
         if !storageProvider.viewContext.hasChanges {
-            completion(.failure(.init(code: 7000)))
+            completion(.failure(.cannotSave))
             return
         }
         do {
@@ -31,12 +31,12 @@ public extension StorageAPI {
             completion(.success(()))
         }catch {
             storageProvider.viewContext.rollback()
-            completion(.failure(.init(error: error)))
+            completion(.failure(.cannotSave))
         }
     }
     
     func deleteRecordDB(deleteFetchRequest: NSFetchRequest<NSFetchRequestResult>,
-                        completion: @escaping (ResponseAPI<Void>) -> Void) {
+                        completion: @escaping (ResponseDB<Void>) -> Void) {
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetchRequest)
         do {
             try storageProvider.viewContext.execute(batchDeleteRequest)
@@ -44,7 +44,7 @@ public extension StorageAPI {
             completion(.success(()))
         }catch {
             storageProvider.viewContext.rollback()
-            completion(.failure(.init(error: error)))
+            completion(.failure(.cannotDelete))
         }
     }
 }
