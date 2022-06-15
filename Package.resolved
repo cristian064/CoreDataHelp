@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "GenericUtilities",
-        "repositoryURL": "git@github.com:cristian064/GenericUtilities.git",
+        "repositoryURL": "https://github.com/cristian064/GenericUtilities.git",
         "state": {
-          "branch": null,
-          "revision": "9880e7b232d09ecd4ff2ab007c2c177a9be72f61",
-          "version": "1.0.4"
+          "branch": "feature/req001",
+          "revision": "c0883a34ea2eb6ffd97cfc323bd0a48a6efa15f0",
+          "version": null
         }
       }
     ]
